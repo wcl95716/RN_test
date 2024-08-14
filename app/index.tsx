@@ -22,6 +22,10 @@ const categories:Category[] = [
     title: "redux",
     items: [
       { label: "Redux", href: "/examples/Redux" },
+      { label: "Modal", href: "/examples/Modal" },
+      { label: "TipModal", href: "/examples/TipModal" },
+      //AutoCloseModal 
+      { label: "AutoCloseModal", href: "/examples/AutoCloseModal" },
     ],
   },
 ];
