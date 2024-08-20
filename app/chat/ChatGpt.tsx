@@ -1,8 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { GiftedChat, IMessage } from 'react-native-gifted-chat'
+import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Alert, ScrollView, Text } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 
+const messages = [
+  "# Hello World\nTry **long pressing** this bubble!",
+  "Here's a list:\n- Item 1\n- Item 2\n- Item 3",
+  "## Markdown Example\nThis is *italic*, this is **bold**.",
+  "Click [here](https://example.com) to visit!",
+  "## Code Block\n```js\nconsole.log('Hello, world!');\n```"
+];
 
 const ChatBubble = ({ text }) => {
   const handleLongPress = () => {
@@ -18,41 +24,17 @@ const ChatBubble = ({ text }) => {
   );
 };
 
-
-export default function Example() {
-  const [messages, setMessages] = useState<IMessage[]>([])
-
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ])
-  }, [])
-
-  const onSend = useCallback((messages:IMessage[] = []) => {
-    setMessages(previousMessages =>
-      GiftedChat.append(previousMessages, messages),
-    )
-  }, [])
-
+export default function App() {
   return (
-    <GiftedChat
-      messages={messages}
-      onSend={messages => onSend(messages)}
-      user={{
-        _id: 1,
-      }}
-    />
-  )
+    <ScrollView style={styles.container}>
+      {messages.map((msg, index) => (
+        <ChatBubble key={index} text={msg} />
+      ))}
+    </ScrollView>
+  );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

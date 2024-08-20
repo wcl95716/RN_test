@@ -36,6 +36,8 @@ const categories:Category[] = [
       //  Chatgpt2
       { label: "Chatgpt2", href: "/chat/Chatgpt2" },
       { label: "ChatGptMD", href: "/chat/ChatGptMD" },
+      // Chatgpt3
+      { label: "Chatgpt3", href: "/chat/Chatgpt3" },
     ],
   },
 ];

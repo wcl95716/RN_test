@@ -1,168 +1,97 @@
-import React from 'react';
-import { WebView } from 'react-native-webview';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import MarkdownIt from 'markdown-it';
-import { View, StyleSheet } from 'react-native';
-import MarkdownRenderer from './MarkdownRenderer'; // 确保文件路径正确
+import React, { useState, useCallback, useEffect } from 'react';
+import { GiftedChat, IMessage, Bubble, BubbleProps } from 'react-native-gifted-chat';
+import { StyleSheet, View, TouchableOpacity, Alert, ScrollView, Text } from 'react-native';
+import Markdown from 'react-native-markdown-display';
 
+interface ICustomMessage extends IMessage {
+  isMarkdown?: boolean;
+}
 
-const md = new MarkdownIt();
-
-const MarkdownMessage = ({ markdown }) => {
-  const htmlContent = `
-    <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/styles/github-dark.min.css">
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js"></script>
-      <style>
-        body {
-          margin: 0;
-          padding: 0;
-          font-size: 16px;
-          box-sizing: border-box;
-          width: 100%;
-          max-width: 100%;
-          overflow-x: hidden;
-        }
-        .markdown-body {
-          width: 100%;
-          padding: 0;
-          box-sizing: border-box;
-        }
-        pre {
-          position: relative;
-          padding: 10px;
-          margin: 10px 0;
-          background: #0d1117;
-          border-radius: 6px;
-          width: 100%;
-          box-sizing: border-box;
-          overflow: auto;
-        }
-        code {
-          margin: 0;
-          padding: 0;
-          display: block;
-          white-space: pre-wrap;
-          font-size: 15px;
-        }
-        .code-header {
-          background-color: #161b22;
-          padding: 8px 12px;
-          color: #8b949e;
-          font-size: 14px;
-          border-top-left-radius: 6px;
-          border-top-right-radius: 6px;
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          box-sizing: border-box;
-        }
-        .copy-btn {
-          background: none;
-          border: none;
-          color: #8b949e;
-          cursor: pointer;
-        }
-        .copy-btn:hover {
-          color: white;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="markdown-body">
-        ${md.render(markdown)}
-      </div>
-      <script>
-        document.querySelectorAll('pre code').forEach(block => {
-          hljs.highlightBlock(block);
-          const classNameParts = block.className.split(' ');
-          const languageClass = classNameParts.find(cls => cls.startsWith('language-'));
-          const language = languageClass ? languageClass.replace('language-', '') : 'plaintext';
-          
-          const header = document.createElement('div');
-          header.className = 'code-header';
-          header.innerHTML = '<span>' + language + '</span><button class="copy-btn">复制代码</button>';
-          block.parentNode.insertBefore(header, block);
-
-          const copyButton = header.querySelector('.copy-btn');
-          new ClipboardJS(copyButton, { text: () => block.textContent });
-          copyButton.addEventListener('click', () => {
-            copyButton.textContent = '已复制';
-            setTimeout(() => { copyButton.textContent = '复制代码'; }, 2000);
-          });
-        });
-      </script>
-    </body>
-    </html>
-  `;
+const ChatBubble: React.FC<{ text: string }> = ({ text }) => {
+  const handleLongPress = () => {
+    Alert.alert('Long Press', 'You pressed the bubble!');
+  };
 
   return (
-    <WebView
-      originWhitelist={['*']}
-      source={{ html: htmlContent }}
-      style={{ flex: 1, height: 200 }}
-    />
+    <TouchableOpacity onLongPress={handleLongPress} style={styles.bubble}>
+      <Markdown style={styles.markdown}>
+        {text}
+      </Markdown>
+    </TouchableOpacity>
   );
 };
 
-const ChatScreen = () => {
-  const [messages, setMessages] = React.useState([]);
+export default function Example() {
+  const [messages, setMessages] = useState<ICustomMessage[]>([])
 
-  React.useEffect(() => {
+  useEffect(() => {
     setMessages([
       {
         _id: 1,
-        text: '',
+        text: `
+  ## 实现代码
+
+  以下是一个实现 GitHub 风格 Markdown 渲染的示例代码：
+
+  \`\`\`javascript
+  import React from 'react';
+  import { View, StyleSheet } from 'react-native';
+  import { WebView } from 'react-native-webview';
+  import showdown from 'showdown';
+  \`\`\`
+        
+        
+        `,
         createdAt: new Date(),
         user: {
           _id: 2,
           name: 'React Native',
+          avatar: 'https://placeimg.com/140/140/any',
         },
-        markdown: '```javascript\nconsole.log("Hello World");\n```',
+        isMarkdown: true,
       },
-    ]);
-  }, []);
+    ])
+  }, [])
 
-  const renderBubble = (props) => {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          left: { backgroundColor: '#f0f0f0' },
-          right: { backgroundColor: '#0078FF' },
-        }}
-        renderCustomView={() =>
-          props.currentMessage.markdown ? (
-            <View style={styles.markdownContainer}>
-              <MarkdownRenderer markdown={props.currentMessage.markdown} />
-            </View>
-          ) : null
-        }
-      />
-    );
+  const onSend = useCallback((messages: ICustomMessage[] = []) => {
+    setMessages(previousMessages =>
+      GiftedChat.append(previousMessages, messages),
+    )
+  }, [])
+
+  const renderBubble = (props: BubbleProps<ICustomMessage>) => {
+    if (props.currentMessage?.isMarkdown) {
+      return <ChatBubble text={props.currentMessage.text} />;
+    }
+    return <Bubble {...props} />;
   };
 
   return (
     <GiftedChat
       messages={messages}
-      onSend={(newMessages) => setMessages(GiftedChat.append(messages, newMessages))}
+      onSend={messages => onSend(messages)}
       user={{
         _id: 1,
       }}
       renderBubble={renderBubble}
     />
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
-  markdownContainer: {
-    width: 250, // 调整宽度以适应气泡
+  bubble: {
+    backgroundColor: 'white',
+    padding: 15,
     borderRadius: 10,
-    overflow: 'hidden',
+    marginVertical: 5,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    elevation: 2,
   },
+  markdown: {
+    fontSize: 16,
+  }
 });
-
-export default ChatScreen;

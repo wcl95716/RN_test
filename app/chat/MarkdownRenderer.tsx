@@ -99,8 +99,7 @@ const MarkdownRenderer = ({ markdown }) => {
     <WebView
       originWhitelist={['*']}
       source={{ html: htmlContent }}
-      // style={{ flex: 1, width: '100%', height: "100%" }}
-      style={{  width: '100%', height: "100%"  }}
+      // style={{width: '100%', height: "100%" }}
     />
   );
 };
