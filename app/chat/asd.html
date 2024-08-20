@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formatted Code Block Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .code-block {
+            position: relative;
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+        .code-block pre {
+            margin: 0;
+        }
+        .code-block code {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 16px;
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+<body>
+
+<h2>FastAPI 示例</h2>
+
+<p>以下是一个简单的 FastAPI 示例：</p>
+
+<div class="code-block">
+    <button class="copy-button" onclick="copyToClipboard(this)">Copy</button>
+    <pre><code>
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+async def root():
+    return {"message": "Hello, World!"}
+    </code></pre>
+</div>
+
+<p>该应用程序创建一个 FastAPI 实例，并使用 <code>@app.get()</code> 装饰器将根路径 <code>/</code> 的路由处理程序定义为 <code>async def root()</code> 函数。路由处理程序返回一个 JSON 对象，包含一个消息字段，值为 <code>"Hello, World!"</code>。</p>
+
+<p>运行该应用程序并在浏览器中访问 <code>http://localhost:8000/</code>，应该会看到以下 JSON 响应：</p>
+
+<div class="output">
+<pre><code>
+{"message": "Hello, World!"}
+</code></pre>
+</div>
+
+<script>
+function copyToClipboard(button) {
+    // Find the code block
+    const codeBlock = button.nextElementSibling.innerText;
+
+    // Copy the code block to the clipboard
+    navigator.clipboard.writeText(codeBlock).then(() => {
+        // Alert the user that the content has been copied
+        alert('代码已复制到剪贴板');
+    }).catch(err => {
+        console.error('无法复制内容: ', err);
+    });
+}
+</script>
+
+</body>
+</html>

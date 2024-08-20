@@ -21,11 +21,21 @@ const categories:Category[] = [
   {
     title: "redux",
     items: [
-      { label: "Redux", href: "/examples/Redux" },
+      { label: "Redux1", href: "/examples/Redux" },
       { label: "Modal", href: "/examples/Modal" },
       { label: "TipModal", href: "/examples/TipModal" },
       //AutoCloseModal 
       { label: "AutoCloseModal", href: "/examples/AutoCloseModal" },
+    ],
+  },
+  {
+    title: "chat",
+    items: [
+      { label: "ChatTest", href: "/chat/ChatTest" },
+      { label: "ChatGpt", href: "/chat/ChatGpt" },
+      //  Chatgpt2
+      { label: "Chatgpt2", href: "/chat/Chatgpt2" },
+      { label: "ChatGptMD", href: "/chat/ChatGptMD" },
     ],
   },
 ];
