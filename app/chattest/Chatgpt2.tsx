@@ -3,55 +3,28 @@ import { GiftedChat, IMessage, Bubble, BubbleProps } from 'react-native-gifted-c
 import { StyleSheet, View, TouchableOpacity, Alert, ScrollView, Text } from 'react-native';
 import Markdown from 'react-native-markdown-display';
 
-
-// 样式
-const styles = StyleSheet.create({
-  bubble: {
-    backgroundColor: 'white',
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 5,
-    marginHorizontal: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 1,
-    elevation: 2,
-  },
-  markdown: {
-    fontSize: 14,
-  }
-});
-
-
-
-// 扩展 IMessage 接口以包含 Markdown 内容的标志
 interface ICustomMessage extends IMessage {
-  isMarkdown?: boolean; // 是否是Markdown格式的消息
+  isMarkdown?: boolean;
 }
 
-
-// 自定义组件，用于渲染包含 Markdown 的消息
 const ChatBubble: React.FC<{ text: string }> = ({ text }) => {
   const handleLongPress = () => {
-    Alert.alert('Long Press', '你长按了消息泡泡！'); // 长按提示
+    Alert.alert('Long Press', 'You pressed the bubble!');
   };
 
   return (
     <TouchableOpacity onLongPress={handleLongPress} style={styles.bubble}>
-      <Markdown style={{ body: styles.markdown }}>
+      <Markdown style={styles.markdown}>
         {text}
       </Markdown>
     </TouchableOpacity>
   );
 };
 
-// 主组件
 export default function Example() {
-  const [messages, setMessages] = useState<ICustomMessage[]>([]); // 消息数组的状态
+  const [messages, setMessages] = useState<ICustomMessage[]>([])
 
   useEffect(() => {
-    // 初始消息设置
     setMessages([
       {
         _id: 1,
@@ -66,6 +39,8 @@ export default function Example() {
   import { WebView } from 'react-native-webview';
   import showdown from 'showdown';
   \`\`\`
+        
+        
         `,
         createdAt: new Date(),
         user: {
@@ -78,14 +53,12 @@ export default function Example() {
     ])
   }, [])
 
-  // 发送消息的回调函数
   const onSend = useCallback((messages: ICustomMessage[] = []) => {
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, messages),
     )
   }, [])
 
-  // 渲染每个气泡的函数，根据消息是否为Markdown来决定使用哪个组件
   const renderBubble = (props: BubbleProps<ICustomMessage>) => {
     if (props.currentMessage?.isMarkdown) {
       return <ChatBubble text={props.currentMessage.text} />;
@@ -98,10 +71,27 @@ export default function Example() {
       messages={messages}
       onSend={messages => onSend(messages)}
       user={{
-        _id: 1, // 当前用户的ID
+        _id: 1,
       }}
-      renderBubble={renderBubble} // 使用自定义的渲染气泡方法
+      renderBubble={renderBubble}
     />
   )
 }
 
+const styles = StyleSheet.create({
+  bubble: {
+    backgroundColor: 'white',
+    padding: 15,
+    borderRadius: 10,
+    marginVertical: 5,
+    marginHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 1,
+    elevation: 2,
+  },
+  markdown: {
+    fontSize: 16,
+  }
+});

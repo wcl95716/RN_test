@@ -9,6 +9,13 @@ interface Category {
 
 const categories:Category[] = [
   {
+    title: "Chat",
+    items: [
+      //  Chatgpt2
+      { label: "Chatgpt2", href: "/chat/Chatgpt2" },
+    ],
+  },
+  {
     title: "Basic Components",
     items: [
       { label: "ButtonExample", href: "/examples/ButtonExample" },
@@ -29,17 +36,18 @@ const categories:Category[] = [
     ],
   },
   {
-    title: "chat",
+    title: "chattest",
     items: [
-      { label: "ChatTest", href: "/chat/ChatTest" },
-      { label: "ChatGpt", href: "/chat/ChatGpt" },
+      { label: "ChatTest", href: "/chattest/ChatTest" },
+      { label: "ChatGpt", href: "/chattest/ChatGpt" },
       //  Chatgpt2
-      { label: "Chatgpt2", href: "/chat/Chatgpt2" },
-      { label: "ChatGptMD", href: "/chat/ChatGptMD" },
+      { label: "Chatgpt2", href: "/chattest/Chatgpt2" },
+      { label: "ChatGptMD", href: "/chattest/ChatGptMD" },
       // Chatgpt3
-      { label: "Chatgpt3", href: "/chat/Chatgpt3" },
+      { label: "Chatgpt3", href: "/chattest/Chatgpt3" },
     ],
   },
+
 ];
 
 const Category = ({ title, items }: { title: string, items: { label: string, href: string }[] }) => (
