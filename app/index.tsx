@@ -13,6 +13,8 @@ const categories:Category[] = [
     items: [
       //  Chatgpt2
       { label: "Chatgpt2", href: "/chat/Chatgpt2" },
+      { label: "chattest", href: "/chat/chattest" },
+      { label: "chattest2", href: "/chat/chattest2" },
     ],
   },
   {

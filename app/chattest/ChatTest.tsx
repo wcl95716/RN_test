@@ -38,6 +38,7 @@ export default function Example() {
   }, [])
 
   const onSend = useCallback((messages:IMessage[] = []) => {
+    console.log("messages ", messages)
     setMessages(previousMessages =>
       GiftedChat.append(previousMessages, messages),
     )
