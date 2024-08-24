@@ -71,15 +71,14 @@ export default function Example() {
         console.log("asdasd ",fullText.slice(0, index))
         index++;
       } else {
-        clearInterval(interval);
         setCurrentText("");
+        clearInterval(interval);
       }
     }, 50); // 控制文本显示速度
 
     return () => clearInterval(interval);
   }, []);
 
-  
   useEffect(() => {
     // 初始消息设置
     setMessages([
@@ -117,9 +116,9 @@ export default function Example() {
 
   // 渲染每个气泡的函数，根据消息是否为Markdown来决定使用哪个组件
   const renderBubble = (props: BubbleProps<ICustomMessage>) => {
-    if (currentText.length > 0 ){
-      return <ChatBubble text={currentText} />;
-    }
+    // if (currentText.length > 0 ){
+    //   return <ChatBubble text={currentText} />;
+    // }
     if (props.currentMessage?.isMarkdown) {
       return <ChatBubble text={props.currentMessage.text} />;
     }

@@ -14,11 +14,11 @@ export default function ChatComponent() {
 
   const handleSend = useCallback((newMessages: IMessage[]) => {
     newMessages.forEach(message => {
-      const customMessage = {
+      const customMessage:ICustomMessage = {
         ...message,
         createdAt: new Date(message.createdAt).getTime()  // 存储时间戳
       };
-      dispatch(addMessage(customMessage as ICustomMessage));
+      dispatch(addMessage(customMessage));
     });
   }, [dispatch]);
 
